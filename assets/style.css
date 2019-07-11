@@ -1,0 +1,105 @@
+body {
+	margin: 0;
+}
+
+header {
+	padding: 50px 30px 30px;
+	background-color: #dcdbdb;
+	box-shadow: 0px 3px 4px #888282;
+}
+
+.contentWrapper {
+	max-width: 1024px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+main .contentWrapper {
+	flex-direction: column;
+}
+
+.btnWrapper button,
+.srchWrapper input[type="submit"],
+.navWrapper button {
+	cursor: pointer;
+}
+
+.btnWrapper button {
+	color: white;
+  background-color: blue;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 800;
+}
+
+.srchWrapper input[type="submit"] {
+	background: transparent;
+	border: none;
+}
+
+.navWrapper {
+	margin: 20px 0;
+}
+
+.navWrapper button {
+	background-color: transparent;
+	border: 1px solid #888282;
+	padding: 3px;
+}
+
+.navWrapper span {
+	font-size: 18px;
+	font-family: sans-serif;
+	display: inline-block;
+  width: 130px;
+  text-align: center;
+}
+
+.calendar {
+	margin-bottom: 30px;
+}
+
+.week {
+	display: flex;
+	flex-direction: row;
+}
+
+.day {
+	width: 145px;
+	height: 145px;
+	box-shadow: 
+		2px 0 0 0 #888282,
+		0 2px 0 0 #888282,
+		2px 2px 0 0 #888282,
+		2px 0 0 0 #888282 inset, 
+		0 2px 0 0 #888282 inset;
+}
+
+.today {
+	background-color: #8882828c;
+	font-weight: bold;
+}
+
+.filled {
+	background-color: #3ddbdb;
+}
+
+.related {
+	color: #888282;
+}
+
+ul {
+	display: flex;
+	flex-direction: column;
+	height: 90%;
+	padding: 5px 6px;
+	margin: 0;
+  list-style: none;
+}
+
+.dayNumber {
+	margin-bottom: 7px;
+}

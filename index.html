@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./assets/style.css">
+	<title>Calendar</title>
+</head>
+<body>
+	<header>
+		<div class="contentWrapper">
+			<div class="btnWrapper">
+				<button>Добавить</button>
+				<button>Обновить</button>
+			</div>
+			<div class="srchWrapper">
+				<input type="submit" value="🔎">
+				<input type="search" name="" id="" placeholder="Событие, дата или участник">
+			</div>
+		</div>
+	</header>
+	<main>
+		<div class="contentWrapper">
+			<div class="navWrapper">
+				<button onclick="prevMonth()">◄</button>
+				<span id="month">Март 2013</span>
+				<button onclick="nextMonth()">►</button>
+				<button onclick="getToday()">Сегодня</button>
+			</div>
+			<div id="calendar" class="calendar">
+				<div class="week">
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Понедельник, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Вторник, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Среда, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Четверг, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Пятница, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Суббота, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber">Воскресенье, </li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+				</div>
+				<div class="week">
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day filled">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle">День рождения</li>
+							<li class="taskDescr">Какой-то человек, Какой-то человек</li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+				</div>
+				<div class="week">
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+				</div>
+				<div class="week">
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+				</div>
+				<div class="week">
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+					<div class="day">
+						<ul>
+							<li class="dayNumber"></li>
+							<li class="taskTitle"></li>
+							<li class="taskDescr"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</main>
+	<script src="./assets/calendar.js"></script>
+</body>
+</html>
