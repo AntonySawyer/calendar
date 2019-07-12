@@ -11,12 +11,12 @@
 	<header>
 		<div class="contentWrapper">
 			<div class="btnWrapper">
-				<button>Добавить</button>
+				<button onclick="showModal('quickAdd')">Добавить</button>
 				<button>Обновить</button>
 			</div>
 			<div class="srchWrapper">
-				<input type="submit" value="🔎">
-				<input type="search" name="" id="" placeholder="Событие, дата или участник">
+				<input type="submit" value="🔎" onclick="showModal('searchTask')">
+				<input type="search" name="" id="" placeholder="Событие, дата или участник" onkeydown="showModal('searchTask')">
 			</div>
 		</div>
 	</header>
@@ -337,6 +337,32 @@
 				</div>
 			</div>
 	</main>
+	<div class="modal-overlay close" id="modal-overlay"></div>
+	<div id="addTask" class="modal close addTask">
+		<button class="clsBtn">X</button>
+		<input type="text" name="" id="" placeholder="Событие">
+		<input type="text" name="" id="" placeholder="День, месяц, год">
+		<input type="text" name="" id="" placeholder="Имена участников">
+		<textarea name="" id="" cols="30" rows="10" placeholder="Описание"></textarea>
+		<div class="controlWrapper">
+			<button class="actionBtn">Готово</button>
+			<button class="actionBtn">Удалить</button>
+		</div>
+	</div>
+	<div id="quickAdd" class="modal close quickAdd">
+			<button class="clsBtn">X</button>
+			<input type="text" name="" id="" placeholder="5 марта, 14:00, День рождения">
+		<button class="actionBtn">Создать</button>
+	</div>
+	<div id="searchTask" class="modal close searchTask">
+		<ul>
+			<li>test 1</li>
+			<li>test 2</li>
+			<li>test 3</li>
+			<li>test 4</li>
+			<li>test 5</li>
+		</ul>
+	</div>
 	<script src="./assets/calendar.js"></script>
 </body>
 </html>

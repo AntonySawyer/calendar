@@ -4,6 +4,9 @@ const dayFields = document.querySelectorAll('.day');
 
 (function init() {
 	changeMonth(date.getMonth(), date.getFullYear());
+	dayFields.forEach(el => el.addEventListener('click', () => showModal('addTask')));
+	document.querySelector('#modal-overlay').addEventListener('click', closeModals);
+	document.querySelectorAll('.clsBtn').forEach(el => el.addEventListener('click', closeModals));
 })()
 
 function changeMonth(newMonth, newYear) {
@@ -43,3 +46,14 @@ function prevMonth() {
 function getToday() {
 	changeMonth(date.getMonth(), date.getFullYear());
 }
+
+function closeModals() {
+	document.querySelector('.modal:not(.close)').classList.add('close');
+	document.querySelector('#modal-overlay').classList.add('close');
+}
+
+function showModal(target) {
+	document.querySelector(`#${target}`).classList.remove('close');
+	document.querySelector('#modal-overlay').classList.remove('close');
+}
+
