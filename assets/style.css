@@ -12,12 +12,6 @@ button {
 	cursor: pointer;
 }
 
-.btnWrapper > button:focus,
-.btnWrapper > button:active {
-	color: #e6e3e3;
-	background-color: #040494;
-}
-
 .contentWrapper {
 	max-width: 1024px;
 	margin: 0 auto;
@@ -43,6 +37,11 @@ main .contentWrapper {
   border: none;
   border-radius: 5px;
   font-weight: 800;
+}
+
+.btnWrapper > .activeBtn {
+	color: #e6e3e3;
+	background-color: #040494;
 }
 
 .srchWrapper button {
@@ -98,6 +97,13 @@ main .contentWrapper {
 
 .filled {
 	background-color: #3ddbdb;
+}
+
+.selected {
+	background-color: #7dfdfd;
+	border: 1px solid #39689e;
+	width: 143px;
+	height: 143px;
 }
 
 .today {

@@ -63,7 +63,16 @@ function getToday() {
 function closeModals() {
 	document.querySelectorAll('.modal:not(.close)').forEach(el => el.classList.add('close'));
 	document.querySelector('#modal-overlay').classList.add('close');
+	removeClassIfExist('selected');
+	removeClassIfExist('activeBtn');
 	clearInputs();
+}
+
+function removeClassIfExist(classname) {
+	const el = document.querySelector(`.${classname}`);
+	if (el) {
+		el.classList.remove(classname);
+	}		
 }
 
 function showModal(idToShow, target) {
@@ -73,7 +82,11 @@ function showModal(idToShow, target) {
 	arrowEl.classList.remove('close');
 	setArrowPosition(arrowEl, modalEl, target, idToShow);
 	document.querySelector('#modal-overlay').classList.remove('close');
+	if (idToShow === 'quickAdd') {
+		document.querySelector('#showQuickAdd').classList.add('activeBtn');
+	}
 	if (idToShow === 'addTask') {
+		target.classList.add('selected');
 		document.querySelector('#taskDate').value = target.getAttribute('data-fulldate');
 		if (target.classList.contains('filled')) {
 			modalEl.classList.add('toEdit');
