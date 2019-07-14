@@ -163,10 +163,12 @@ ul {
   top: 95px;
   right: 135px;
   display: block;
-  background-color: white;
-  width: 180px;
+	background-color: white;
+	padding: 0;
+  width: 205px;
   max-height: 150px;
-  overflow: overlay;
+	overflow: overlay;
+	z-index: 4;
 }
 
 .arrow {
@@ -184,8 +186,24 @@ ul {
 
 .searchOption {
 	cursor: pointer;
-	padding: 5px 0 3px;
-	border-bottom: #0000ff 1px solid;
+	padding: 10px 3px 5px;
+}
+
+.searchOption .title {
+	font-weight: bold;
+	display: block;
+}
+
+.searchOption .date {
+	color: #888282;
+}
+
+.searchOption:hover {
+	background-color: #0000ff;
+}
+
+.searchOption:hover > span {
+	color: #ffffff;
 }
 
 .quickAdd {

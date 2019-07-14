@@ -135,6 +135,12 @@ function parseDate(dateStr) {
 	return [year, month, date];
 }
 
+function showIfNeeded(date, result) {
+	if (date[0] === calendar.getAttribute('data-year') && (date[1]-1) === calendar.getAttribute('data-month')) {
+		showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
+	}
+}
+
 function quickAdd() {
 	const values = document.querySelector('#quickTask').value.split(',');
 	const date = parseDate(values[0]);
@@ -147,7 +153,7 @@ function quickAdd() {
 									'peoples': '',
 									'descr': ''};
 	updateStorage(date[0], date[1], date[2], result);
-	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
+	showIfNeeded(date, result);
 	closeModals();
 }
 
@@ -164,7 +170,7 @@ function addTask() {
 									'peoples': peoples,
 									'descr': descr};
 	updateStorage(date[0], date[1], date[2], result);
-	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
+	showIfNeeded(date, result);
 	closeModals();
 }
 
@@ -216,12 +222,12 @@ function makeSearch() {
 				const strToCompare = tasks[year][month][date].title;
 				if (strToCompare.toLowerCase().includes(strToSearch.toLowerCase())) {
 					const fullDate = `${date}.${month}.${year}`;
-					const linkedEl = findDateField(fullDate);
 					const li = document.createElement('li');
-					li.innerText = strToCompare;
+					li.innerHTML = `<span class="title">${strToCompare}</span>
+													<span class="date">${date}.${month}</span>`;
 					li.classList.add('searchOption');
 					li.setAttribute('data-fulldate', fullDate);
-					li.addEventListener("click", () => {closeModals(); showModal('addTask', linkedEl)});
+					li.addEventListener("click", () => showFromSearch(fullDate));
 					searchResult.appendChild(li);
 				}
 			}
@@ -229,6 +235,24 @@ function makeSearch() {
 	}
 	if (searchResult.childElementCount === 0) {
 		searchResult.innerHTML = '<li>С таким названием ничего не найдено =(</li>';
+	}
+}
+
+function showFromSearch(fullDate) {
+	console.log('show from with fullDate = ' + fullDate);
+	closeModals();
+	const date = parseDate(fullDate);
+	console.log('and date is ' + date);
+	const currentYear = calendar.getAttribute('data-year');
+	const currentMonth = Number(calendar.getAttribute('data-month')) + 1;
+	if (date[0] !== currentYear || date[1] !== currentMonth) {
+		console.log('if true');
+		changeMonth(date[1]-1, date[0]);
+		showFromSearch(fullDate);
+	} else {
+		console.log('else');
+		const linkedEl = findDateField(fullDate);
+		showModal('addTask', linkedEl);
 	}
 }
 
