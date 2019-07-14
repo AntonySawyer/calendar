@@ -133,7 +133,9 @@ function addTask() {
 
 function deleteTask() {
 	const date = parseDate(document.querySelector('#taskDate').value);
-	updateStorage(date[0], date[1], date[2], null);
+	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+	delete tasks[date[0]][date[1]][date[2]];
+	localStorage.setItem('tasks', JSON.stringify(tasks));
 	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), null);
 	closeModals();
 }
@@ -182,7 +184,7 @@ function makeSearch() {
 					li.innerText = strToCompare;
 					li.classList.add('searchOption');
 					li.setAttribute('data-fulldate', fullDate);
-					li.addEventListener("click", () => showModal('addTask', linkedEl));
+					li.addEventListener("click", () => {closeModals(); showModal('addTask', linkedEl)});
 					searchResult.appendChild(li);
 				}
 			}
