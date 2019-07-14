@@ -2,14 +2,21 @@ const date = new Date();
 const calendar = document.getElementById('calendar');
 const dayFields = document.querySelectorAll('.day');
 
-(function init() {
+function init() {
 	changeMonth(date.getMonth(), date.getFullYear());
-	dayFields.forEach(el => el.addEventListener('click', () => showModal('addTask')));
+	dayFields.forEach(el => el.addEventListener('click', (e) => showModal('addTask', e.currentTarget)));
 	document.querySelector('#modal-overlay').addEventListener('click', closeModals);
 	document.querySelectorAll('.clsBtn').forEach(el => el.addEventListener('click', closeModals));
-})()
+	document.onkeydown = (e) => {
+    if (e.keyCode == 27) {
+			closeModals();
+    }
+	};
+}
+init();
 
 function changeMonth(newMonth, newYear) {
+	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
 	const weekdayNames = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 	const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 	const monthField = document.querySelector('#month');
@@ -18,10 +25,16 @@ function changeMonth(newMonth, newYear) {
 	monthField.innerText = monthNames[newMonth] + ' ' + newYear;
 	const startDay = (new Date(newYear, newMonth).getDate() % 7) - new Date(newYear, newMonth).getDay() + 1;
 	for (let i = 0; i < dayFields.length; i++) {
-		const dateForField = new Date(newYear, newMonth, (startDay > 1 ? startDay-7 : startDay) + i).getDate();
+		const calculatedDate = new Date(newYear, newMonth, (startDay > 1 ? startDay-7 : startDay) + i);
+		const dateForField = calculatedDate.getDate();
 		const currentField = dayFields[i].querySelector('.dayNumber');
 		currentField.innerText = i < 7 ? `${weekdayNames[i]}, ${dateForField}` : dateForField;
 		dayFields[i].classList.remove('related', 'today', 'filled');
+		clearField(dayFields[i]);
+		dayFields[i].setAttribute('data-fulldate', `${calculatedDate.getDate()}.${calculatedDate.getMonth()+1}.${calculatedDate.getFullYear()}`);
+		if (tasks.hasOwnProperty(newYear) && tasks[newYear].hasOwnProperty(newMonth+1) && tasks[newYear][newMonth+1].hasOwnProperty(dateForField) && calculatedDate.getMonth() === newMonth) {
+			showTask(dayFields[i], tasks[newYear][newMonth+1][dateForField]);
+		}
 		if (Math.abs(dateForField - i) > 5) {
 			dayFields[i].classList.add('related');
 		}
@@ -50,10 +63,136 @@ function getToday() {
 function closeModals() {
 	document.querySelector('.modal:not(.close)').classList.add('close');
 	document.querySelector('#modal-overlay').classList.add('close');
+	clearInputs();
 }
 
-function showModal(target) {
-	document.querySelector(`#${target}`).classList.remove('close');
+function showModal(idToShow, target) {
+	document.querySelector(`#${idToShow}`).classList.remove('close', 'toEdit');
 	document.querySelector('#modal-overlay').classList.remove('close');
+	if (idToShow === 'addTask') {
+		document.querySelector('#taskDate').value = target.getAttribute('data-fulldate');
+		if (target.classList.contains('filled')) {
+			document.querySelector(`#${idToShow}`).classList.add('toEdit');
+			document.querySelector('#taskTitle').value = target.querySelector('.taskTitle').innerText;
+			document.querySelector('#taskPeoples').value = target.querySelector('.taskDescr .people').innerText;
+			document.querySelector('#taskDescr').value = target.querySelector('.taskDescr .descr').innerText;
+		}
+	}
 }
 
+function clearInputs() {
+	document.querySelectorAll('input').forEach(el => el.value = '');
+	document.querySelector('textarea').value = '';
+}
+
+function clearField(target) {
+	target.querySelector('.taskTitle').innerText = '';
+	target.querySelector('.taskDescr').innerHTML = '';
+}
+
+function parseDate(dateStr) {
+	const dateArr = dateStr.split(/[.,\/ -]+/);
+	const year = dateArr[2];
+	const month = Number(dateArr[1]);
+	const date = Number(dateArr[0]);
+	return [year, month, date];
+}
+
+function quickAdd() {
+	const values = document.querySelector('#quickTask').value.split(',');
+	const date = parseDate(values[0]);
+	const title = values.splice(1).join(',');
+	if (title === '' || date === '') {
+		alert('Fill date and title!');
+		return;
+	}
+	const result = {'title': title,
+									'peoples': '',
+									'descr': ''};
+	updateStorage(date[0], date[1], date[2], result);
+	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
+	closeModals();
+}
+
+function addTask() {
+	const title = document.querySelector('#taskTitle').value;
+	const date = parseDate(document.querySelector('#taskDate').value);
+	const peoples = document.querySelector('#taskPeoples').value;
+	const descr = document.querySelector('#taskDescr').value;
+	if (title === '' || date === '') {
+		alert('Title and date is mandatory!');
+		return;
+	}
+	const result = {'title': title,
+									'peoples': peoples,
+									'descr': descr};
+	updateStorage(date[0], date[1], date[2], result);
+	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
+	closeModals();
+}
+
+function deleteTask() {
+	const date = parseDate(document.querySelector('#taskDate').value);
+	updateStorage(date[0], date[1], date[2], null);
+	showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), null);
+	closeModals();
+}
+
+function updateStorage(year, month, date, item) {
+	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+	if (tasks[year] === undefined) {
+		tasks[year] = {[month]: {
+											[date]: item}};
+	} else if (tasks[year][month] === undefined) {
+		tasks[year][month] = {[date]: item};
+	} else {
+		tasks[year][month][date] = item;
+	}
+	localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function showTask(target, taskData) {
+	const taskTitleValue = target.querySelector('.taskTitle');
+	const taskDescrValue = target.querySelector('.taskDescr');
+	if (taskData !== null) {
+		target.classList.add('filled');
+		taskTitleValue.innerText = taskData.title;
+		taskDescrValue.innerHTML = `<span class="people">${taskData.peoples}</span><br><span class="descr">${taskData.descr}</span>`;
+	} else {
+		target.classList.remove('filled');
+		taskTitleValue.innerText = '';
+		taskDescrValue.innerHTML = '';
+	}
+}
+
+function makeSearch() {
+	showModal('searchTask');
+	const searchResult = document.querySelector('#searchTask ul');
+	searchResult.innerHTML = '';
+	const strToSearch = document.querySelector('#searchValue').value;
+	const tasks = JSON.parse(localStorage.getItem('tasks'));
+	for (const year in tasks) {
+		for (const month in tasks[year]) {
+			for (const date in tasks[year][month]) {
+				const strToCompare = tasks[year][month][date].title;
+				if (strToCompare.toLowerCase().includes(strToSearch.toLowerCase())) {
+					const fullDate = `${date}.${month}.${year}`;
+					const linkedEl = findDateField(fullDate);
+					const li = document.createElement('li');
+					li.innerText = strToCompare;
+					li.classList.add('searchOption');
+					li.setAttribute('data-fulldate', fullDate);
+					li.addEventListener("click", () => showModal('addTask', linkedEl));
+					searchResult.appendChild(li);
+				}
+			}
+		}
+	}
+	if (searchResult.childElementCount === 0) {
+		searchResult.innerHTML = '<li>С таким названием ничего не найдено =(</li>';
+	}
+}
+
+function findDateField(fullDate) {
+	return document.querySelector(`.day[data-fulldate="${fullDate}"]`);
+}

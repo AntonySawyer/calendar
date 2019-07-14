@@ -12,6 +12,12 @@ button {
 	cursor: pointer;
 }
 
+.btnWrapper > button:focus,
+.btnWrapper > button:active {
+	color: #e6e3e3;
+	background-color: #040494;
+}
+
 .contentWrapper {
 	max-width: 1024px;
 	margin: 0 auto;
@@ -25,21 +31,21 @@ main .contentWrapper {
 }
 
 .btnWrapper button,
-.srchWrapper input[type="submit"],
+.srchWrapper button,
 .navWrapper button {
 	cursor: pointer;
 }
 
 .btnWrapper button {
 	color: white;
-  background-color: blue;
+  background-color: #0000ff;
   padding: 5px;
   border: none;
   border-radius: 5px;
   font-weight: 800;
 }
 
-.srchWrapper input[type="submit"] {
+.srchWrapper button {
 	background: transparent;
 	border: none;
 }
@@ -78,18 +84,29 @@ main .contentWrapper {
 		2px 0 0 0 #888282,
 		0 2px 0 0 #888282,
 		2px 2px 0 0 #888282,
-		2px 0 0 0 #888282 inset, 
+		2px 0 0 0 #888282 inset,
 		0 2px 0 0 #888282 inset;
 	cursor: pointer;
 }
 
-.today {
-	background-color: #8882828c;
-	font-weight: bold;
+.day ul li {
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .filled {
 	background-color: #3ddbdb;
+}
+
+.today {
+	background-color: #8882828c;
+}
+
+.today .dayNumber,
+.taskTitle {
+	font-weight: bold;
 }
 
 .related {
@@ -146,6 +163,12 @@ ul {
   overflow: overlay;
 }
 
+.searchOption {
+	cursor: pointer;
+	padding: 5px 0 3px;
+	border-bottom: #0000ff 1px solid;
+}
+
 .quickAdd {
 	position: absolute;
 	top: 89px;
@@ -177,6 +200,11 @@ ul {
 
 .modal textarea {
 	margin: 35px 0 10px;
+}
+
+.toEdit > input,
+.toEdit > textarea {
+	border: none;
 }
 
 .close {
