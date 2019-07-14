@@ -144,7 +144,7 @@ ul {
 
 .addTask {
 	flex-direction: column;
-	position: fixed;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	transition: (50%, 50%);
@@ -161,6 +161,19 @@ ul {
   width: 180px;
   max-height: 150px;
   overflow: overlay;
+}
+
+.arrow {
+	padding: 0;
+  box-shadow: none;
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 25px solid white;
+	position: absolute;
+	top: 75px;
+	right: 285px;
 }
 
 .searchOption {
@@ -210,3 +223,4 @@ ul {
 .close {
 	display: none;
 }
+

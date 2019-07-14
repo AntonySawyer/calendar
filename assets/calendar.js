@@ -61,21 +61,45 @@ function getToday() {
 }
 
 function closeModals() {
-	document.querySelector('.modal:not(.close)').classList.add('close');
+	document.querySelectorAll('.modal:not(.close)').forEach(el => el.classList.add('close'));
 	document.querySelector('#modal-overlay').classList.add('close');
 	clearInputs();
 }
 
 function showModal(idToShow, target) {
-	document.querySelector(`#${idToShow}`).classList.remove('close', 'toEdit');
+	const arrowEl = document.querySelector('.arrow');
+	const modalEl = document.querySelector(`#${idToShow}`);
+	modalEl.classList.remove('close', 'toEdit');
+	arrowEl.classList.remove('close');
+	setArrowPosition(arrowEl, modalEl, target, idToShow);
 	document.querySelector('#modal-overlay').classList.remove('close');
 	if (idToShow === 'addTask') {
 		document.querySelector('#taskDate').value = target.getAttribute('data-fulldate');
 		if (target.classList.contains('filled')) {
-			document.querySelector(`#${idToShow}`).classList.add('toEdit');
+			modalEl.classList.add('toEdit');
 			document.querySelector('#taskTitle').value = target.querySelector('.taskTitle').innerText;
 			document.querySelector('#taskPeoples').value = target.querySelector('.taskDescr .people').innerText;
 			document.querySelector('#taskDescr').value = target.querySelector('.taskDescr .descr').innerText;
+		}
+	}
+}
+
+function setArrowPosition(arrowEl, modalEl, dayEl, idToShow) {
+	if (idToShow !== 'addTask') {
+		arrowEl.style.top = `${modalEl.offsetTop-20}px`;
+		arrowEl.style.left = `${modalEl.offsetLeft+10}px`;
+		arrowEl.style.transform = 'rotate(0deg)';
+	} else {
+		modalEl.style.top = `${dayEl.offsetTop+100}px`;
+		arrowEl.style.top = `${dayEl.offsetTop+10}px`;
+		if (dayEl.offsetLeft > window.innerWidth*0.6) {
+			modalEl.style.left = `${dayEl.offsetLeft-154}px`;
+			arrowEl.style.left = `${modalEl.offsetLeft+140}px`;
+			arrowEl.style.transform = 'rotate(90deg)';
+		} else {
+			modalEl.style.left = `${dayEl.offsetLeft+300}px`;
+			arrowEl.style.left = `${modalEl.offsetLeft-191}px`;
+			arrowEl.style.transform = 'rotate(270deg)';
 		}
 	}
 }
