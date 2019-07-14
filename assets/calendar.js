@@ -1,3 +1,5 @@
+const searchDateFormat = {day: 'numeric', month: 'long', year: 'numeric'};
+
 const date = new Date();
 const calendar = document.getElementById('calendar');
 const dayFields = document.querySelectorAll('.day');
@@ -18,11 +20,10 @@ init();
 function changeMonth(newMonth, newYear) {
 	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
 	const weekdayNames = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
-	const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 	const monthField = document.querySelector('#month');
 	calendar.setAttribute('data-year', newYear);
 	calendar.setAttribute('data-month', newMonth);
-	monthField.innerText = monthNames[newMonth] + ' ' + newYear;
+	monthField.innerText = new Date(`${newMonth+1} 1 ${newYear}`).toLocaleDateString('ru', {year: 'numeric', month: 'long'}).split(' ').splice(0,2).join(' ');
 	const startDay = (new Date(newYear, newMonth).getDate() % 7) - new Date(newYear, newMonth).getDay() + 1;
 	for (let i = 0; i < dayFields.length; i++) {
 		const calculatedDate = new Date(newYear, newMonth, (startDay > 1 ? startDay-7 : startDay) + i);
@@ -129,14 +130,11 @@ function clearField(target) {
 
 function parseDate(dateStr) {
 	const dateArr = dateStr.split(/[.,\/ -]+/);
-	const year = dateArr[2];
-	const month = Number(dateArr[1]);
-	const date = Number(dateArr[0]);
-	return [year, month, date];
+	return [dateArr[2], +dateArr[1], +dateArr[0]];
 }
 
 function showIfNeeded(date, result) {
-	if (date[0] === calendar.getAttribute('data-year') && (date[1]-1) === calendar.getAttribute('data-month')) {
+	if (date[0] === calendar.getAttribute('data-year') && (date[1]-1) === +calendar.getAttribute('data-month')) {
 		showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
 	}
 }
@@ -224,7 +222,7 @@ function makeSearch() {
 					const fullDate = `${date}.${month}.${year}`;
 					const li = document.createElement('li');
 					li.innerHTML = `<span class="title">${strToCompare}</span>
-													<span class="date">${date}.${month}</span>`;
+													<span class="date">${new Date(`${month}.${date}.${year}`).toLocaleDateString('ru', searchDateFormat)}</span>`;
 					li.classList.add('searchOption');
 					li.setAttribute('data-fulldate', fullDate);
 					li.addEventListener("click", () => showFromSearch(fullDate));
@@ -239,18 +237,14 @@ function makeSearch() {
 }
 
 function showFromSearch(fullDate) {
-	console.log('show from with fullDate = ' + fullDate);
 	closeModals();
 	const date = parseDate(fullDate);
-	console.log('and date is ' + date);
 	const currentYear = calendar.getAttribute('data-year');
 	const currentMonth = Number(calendar.getAttribute('data-month')) + 1;
 	if (date[0] !== currentYear || date[1] !== currentMonth) {
-		console.log('if true');
 		changeMonth(date[1]-1, date[0]);
 		showFromSearch(fullDate);
 	} else {
-		console.log('else');
 		const linkedEl = findDateField(fullDate);
 		showModal('addTask', linkedEl);
 	}
