@@ -87,7 +87,7 @@ function showModal(idToShow, target) {
 	}
 	if (idToShow === 'addTask') {
 		target.classList.add('selected');
-		document.querySelector('#taskDate').value = target.getAttribute('data-fulldate');
+		document.querySelector('#taskDate').value = convertInputDate(target.getAttribute('data-fulldate'));
 		if (target.classList.contains('filled')) {
 			modalEl.classList.add('toEdit');
 			document.querySelector('#taskTitle').value = target.querySelector('.taskTitle').innerText;
@@ -95,6 +95,14 @@ function showModal(idToShow, target) {
 			document.querySelector('#taskDescr').value = target.querySelector('.taskDescr .descr').innerText;
 		}
 	}
+}
+
+function convertInputDate(dmyyyy) {
+	const yyyydm = parseDate(dmyyyy);
+	const yyyy = yyyydm[0];
+	const dd = yyyydm[2].toString().length === 2 ? yyyydm[2] : `0${yyyydm[2]}`;
+	const mm = yyyydm[1].toString().length === 2 ? yyyydm[1] : `0${yyyydm[1]}`;
+	return `${yyyy}-${mm}-${dd}`;
 }
 
 function setArrowPosition(arrowEl, modalEl, dayEl, idToShow) {
@@ -129,11 +137,11 @@ function clearField(target) {
 
 function parseDate(dateStr) {
 	const dateArr = dateStr.split(/[.,\/ -]+/);
-	return [dateArr[2], +dateArr[1], +dateArr[0]];
+	return [+dateArr[2], +dateArr[1], +dateArr[0]];
 }
 
 function showIfNeeded(date, result) {
-	if (date[0] === calendar.getAttribute('data-year') && (date[1]-1) === +calendar.getAttribute('data-month')) {
+	if (date[0] === +calendar.getAttribute('data-year') && (date[1]-1) === +calendar.getAttribute('data-month')) {
 		showTask(document.querySelector(`.day[data-fulldate="${date[2]}.${date[1]}.${date[0]}"]`), result);
 	}
 }
@@ -156,7 +164,8 @@ function quickAdd() {
 
 function addTask() {
 	const title = document.querySelector('#taskTitle').value;
-	const date = parseDate(document.querySelector('#taskDate').value);
+	const datePicker = document.querySelector('#taskDate').value;
+	const date = parseDate(datePicker).reverse();
 	const peoples = document.querySelector('#taskPeople').value;
 	const descr = document.querySelector('#taskDescr').value;
 	if (title === '' || date === '') {
@@ -177,7 +186,7 @@ function clearStorage() {
 }
 
 function deleteTask() {
-	const date = parseDate(document.querySelector('#taskDate').value);
+	const date = parseDate(convertInputDate(document.querySelector('#taskDate').value));
 	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
 	delete tasks[date[0]][date[1]][date[2]];
 	localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -243,8 +252,8 @@ function makeSearch() {
 function showFromSearch(fullDate) {
 	closeModals();
 	const date = parseDate(fullDate);
-	const currentYear = calendar.getAttribute('data-year');
-	const currentMonth = Number(calendar.getAttribute('data-month')) + 1;
+	const currentYear = +calendar.getAttribute('data-year');
+	const currentMonth = +calendar.getAttribute('data-month') + 1;
 	if (date[0] !== currentYear || date[1] !== currentMonth) {
 		changeMonth(date[1]-1, date[0]);
 		showFromSearch(fullDate);
