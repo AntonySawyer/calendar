@@ -4,7 +4,7 @@ const date = new Date();
 const calendar = document.getElementById('calendar');
 const dayFields = document.querySelectorAll('.day');
 
-function init() {
+(function init() {
 	changeMonth(date.getMonth(), date.getFullYear());
 	dayFields.forEach(el => el.addEventListener('click', (e) => showModal('addTask', e.currentTarget)));
 	document.querySelector('#modal-overlay').addEventListener('click', closeModals);
@@ -14,8 +14,7 @@ function init() {
 			closeModals();
     }
 	};
-}
-init();
+})()
 
 function changeMonth(newMonth, newYear) {
 	const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
@@ -170,6 +169,11 @@ function addTask() {
 	updateStorage(date[0], date[1], date[2], result);
 	showIfNeeded(date, result);
 	closeModals();
+}
+
+function clearStorage() {
+	localStorage.removeItem('tasks');
+	changeMonth(date.getMonth(), date.getFullYear());
 }
 
 function deleteTask() {
