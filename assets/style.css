@@ -87,6 +87,8 @@ main .contentWrapper {
 		2px 0 0 0 #888282 inset,
 		0 2px 0 0 #888282 inset;
 	cursor: pointer;
+	resize: both;
+  overflow: auto;
 }
 
 .day ul li {
