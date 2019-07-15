@@ -233,7 +233,8 @@ ul {
 	top: 5px;
 }
 
-.modal > input[type="text"] {
+.modal > input[type="text"],
+.modal > input[type="date"] {
 	margin-bottom: 5px;
 	height: 18px;
 }
