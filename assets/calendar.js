@@ -79,13 +79,19 @@ function showModal(idToShow, target) {
 	const arrowEl = document.querySelector('.arrow');
 	const modalEl = document.querySelector(`#${idToShow}`);
 	modalEl.classList.remove('close', 'toEdit');
-	arrowEl.classList.remove('close');
-	setArrowPosition(arrowEl, modalEl, target, idToShow);
+	if (target !== '') {
+		arrowEl.classList.remove('close');
+		setArrowPosition(arrowEl, modalEl, target, idToShow);
+	}
 	document.querySelector('#modal-overlay').classList.remove('close');
 	if (idToShow === 'quickAdd') {
 		document.querySelector('#showQuickAdd').classList.add('activeBtn');
 	}
 	if (idToShow === 'addTask') {
+		if (target === '') {
+			modalEl.style.top = '50%';
+			modalEl.style.left = '50%';		
+		}
 		target.classList.add('selected');
 		document.querySelector('#taskDate').value = convertInputDate(target.getAttribute('data-fulldate'));
 		if (target.classList.contains('filled')) {
