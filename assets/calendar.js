@@ -92,7 +92,7 @@ function showModal(idToShow, target) {
 		if (target.classList.contains('filled')) {
 			modalEl.classList.add('toEdit');
 			document.querySelector('#taskTitle').value = target.querySelector('.taskTitle').innerText;
-			document.querySelector('#taskPeoples').value = target.querySelector('.taskDescr .people').innerText;
+			document.querySelector('#taskPeople').value = target.querySelector('.taskDescr .people').innerText;
 			document.querySelector('#taskDescr').value = target.querySelector('.taskDescr .descr').innerText;
 		}
 	}
@@ -158,7 +158,7 @@ function quickAdd() {
 function addTask() {
 	const title = document.querySelector('#taskTitle').value;
 	const date = parseDate(document.querySelector('#taskDate').value);
-	const peoples = document.querySelector('#taskPeoples').value;
+	const peoples = document.querySelector('#taskPeople').value;
 	const descr = document.querySelector('#taskDescr').value;
 	if (title === '' || date === '') {
 		alert('Title and date is mandatory!');

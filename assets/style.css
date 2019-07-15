@@ -64,7 +64,8 @@ main .contentWrapper {
 	font-family: sans-serif;
 	display: inline-block;
   width: 130px;
-  text-align: center;
+	text-align: center;
+	text-transform: capitalize;
 }
 
 .calendar {
@@ -242,6 +243,19 @@ ul {
 .toEdit > input,
 .toEdit > textarea {
 	border: none;
+}
+
+.toEdit #taskTitle {
+	font-weight: bold;
+}
+
+label[for="taskPeople"] {
+	display: none;
+}
+
+.toEdit label[for="taskPeople"] {
+	display: inline;
+	font-size: 12px;
 }
 
 .close {
